@@ -5,7 +5,7 @@ export default [
         uri:'https://aodb.kix/',
         endpoints:[
             {
-                summary:'provide detailed infomartion related to flights (one flight per row)',
+                summary:'information related to flights and ONLY flight (one flight per row)',
                 path:'/flights',
                 method:'GET',
                 parameters:[
@@ -22,9 +22,25 @@ export default [
                         name:'specify the airport used by the flight',
                         expected_value: {
                             type:'string',
-                            constraints:'must be one of the 3 airports: KIX, ITM or UKB'
+                            constraints:'must be one of those 3 airports: KIX, ITM or UKB. No other airports can be specified.'
                         }
                     },
+                    {
+                        name:'landing_time',
+                        summary:'flight landing date and time',
+                        expected_value: {
+                            type:'number',
+                            constraints:'must be an UNIX timestamp in seconds'
+                        }
+                    },
+                    {
+                        name:'takeoff_time',
+                        summary:'flight take off date and time',
+                        expected_value: {
+                            type:'number',
+                            constraints:'must be an UNIX timestamp in seconds'
+                        }
+                    }
                 ]
             }
         ],

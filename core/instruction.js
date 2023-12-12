@@ -2,33 +2,38 @@ import {Vertex, Request} from '../classes/index.js';
 import Frame from '../frame/index.js';
 import * as prompts from '../prompts/index.js';
 import schema from '../schema/index.js';
+import {ERROR} from './const.js';
 
-const llm = {};
+const llm = {
+    elect: new Vertex(prompts.elect(schema)),
+    toRest: new Vertex(prompts.nl_to_rest(schema)),
+};
+// direct query to correct LLM
+// llm.master = new Vertex();
+// convert NL to REST query object
+// llm.toRest = new Vertex(prompts.nl_to_rest(schema));
+// convert NL to format
+// llm.NlToFormat = new Vertex();
+// convert response object to Text Answer
+// llm.RespToText = new Vertex();
 
-export default {
-    predict: async function main(callback){
-    
-        // Set the Schema of the wanted API
+export default class Instruction {
 
-        // Master LLM used to direct query to correct secondary LLMs
-        llm.master = new Vertex();
-        // LLM converting NL to REST API
-        const preprompt = prompts.nl_to_rest(schema);
-        const llm_toQuery = new Vertex(preprompt);
-        // LLM forumalating final answer
+    static async predict(params, callback){
+
+        //
+        // const query = await llm.toRest.prompt(params.prompt);
+        const query = await llm.elect.prompt(params.prompt);
 
         // Do
-        const query = await llm_toQuery.prompt('Get all flights from Cathay Pacific that flew from ITM');
 
         // Return
         const obj = query.content.stringValue;
-        callback(obj);
+        callback(ERROR.ok, obj);
 
         return;
 
-
         // const r = verb.get(qobj); // obtain the result from api
-
 
         /*
             // to create API request based on JSON
@@ -45,5 +50,12 @@ export default {
         */
 
     }
+
+    static isValid(method) {
+        return Object.getOwnPropertyNames(Instruction)
+            .filter(p => typeof Instruction[p] === 'function' && p !== 'isValid')
+            .includes(method)
+    }
+
 }
 

@@ -3,33 +3,17 @@ import {ERROR} from './const.js';
 
 export default async (request, callback) => {
 
-    const params = request.body;
+    const {instruction, payload} = request.body;
 
-    console.log(request);
-    console.log(params);
-    console.log('B');
+    //Verify parameters
+    if(!(instruction && Instruction.isValid(instruction))){
+        callback(ERROR.invalid_instruction);
+        return;
+    }
 
-    const instruction = 'predict';
+    //TODO : Verify access rights
 
-    Instruction[instruction](params, callback);
-
-    // Verify parameters
-    // if(!(instruction && Instruction.isValid(instruction))){
-    //     callback(ERROR.invalid_instruction);
-    //     return;
-    // }
-
-    // const {params,query,body} = request;
-    // Verify access right fn(instruction, endpoint)
-    /// TODO
-
-    // call the instruction
-    // try{
-    //     Instruction[instruction](request, callback)
-    // }catch(_){
-    //     console.log(_);
-    //     callback(ERROR.invalid_signature);
-    //     return
-    // }
+    // Execute
+    Instruction[instruction](payload, callback);
 
 }
