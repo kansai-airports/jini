@@ -21,15 +21,46 @@ export default class Instruction {
 
     static async predict(params, callback){
 
+        // elect the query
+        const {content} = await llm.elect.prompt(params.prompt);
+        var answer, reason;
+
+        try {
+            console.log('RAW ANSWER')
+            console.log(content.stringValue);
+            console.log('---------------------')
+            const {answer, reason} = JSON.parse(content.stringValue);
+            // console.log(res);
+            // answer = res.a;
+            // reason = res.r;
+            console.log(answer, reason)
+            if(!answer || !('YES','NO').includes(answer)) throw '';
+        }catch(_){
+            console.log(_);
+            callback(ERROR.logic_error, _);
+            return;
+        }
+
         //
-        // const query = await llm.toRest.prompt(params.prompt);
-        const query = await llm.elect.prompt(params.prompt);
+        if(answer === 'NO'){
+            callback(ERROR.ok,{
+                category:'apology',
+                response: {
+                    type:'string',
+                    content:reason
+                }
+            });
+            return;
+        }
 
-        // Do
+        callback(ERROR.ok,{
+            category:'solution',
+            response: {
+                type:'string',
+                content:reason
+            }
+        });
 
-        // Return
-        const obj = query.content.stringValue;
-        callback(ERROR.ok, obj);
 
         return;
 

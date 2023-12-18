@@ -43,7 +43,7 @@ export default class Vertex{
         const endpoint = `projects/${this.project}/locations/${this.location}/publishers/${this.publisher}/models/${this.model}`;
 
         const final_prompt = {prompt: this.preprompt+' '+prompt };
-        console.log(final_prompt)
+        // console.log(final_prompt)
         const instanceValue = helpers.toValue(final_prompt);
         const instances = [instanceValue];
         const parameters = helpers.toValue(this.parameters);
