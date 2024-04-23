@@ -19,6 +19,10 @@ const llm = {
 
 export default class Instruction {
 
+    static async openai(){
+        
+    }
+
     static async predict(params, callback){
 
         // elect the query
