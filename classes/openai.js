@@ -22,7 +22,7 @@ const openai = {
         // Set up the data for the API call
         const data = {
             messages: messages,
-            max_tokens: options.max_token || 64
+            max_tokens: options?.max_token || 64
         };
         try {
             return axios.post(endpoint, data, config);

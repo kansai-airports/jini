@@ -8,6 +8,8 @@ const ERROR = {
     //
     invalid_instruction: 1100001,
     //
+    missing_params: 8000001,
+    //
     logic_error: 9000001,
 }
 

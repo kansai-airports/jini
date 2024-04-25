@@ -1,4 +1,4 @@
-import {Vertex, Request} from '../classes/index.js';
+import {Vertex, Request, Openai} from '../classes/index.js';
 import Frame from '../frame/index.js';
 import * as prompts from '../prompts/index.js';
 import schema from '../schema/index.js';
@@ -19,8 +19,22 @@ const llm = {
 
 export default class Instruction {
 
-    static async openai(){
-        
+    static async openai(params, callback){
+
+        const {prompt} = params || {}
+
+        if(!prompt){
+            callback(ERROR.missing_params, {});
+            return;
+        }
+
+        const {data} = await Openai.call([
+            {role: 'user', content: 'you are a super smart robot who can answer only in japanese, no matter what the language the question is in.\n'},
+            {role: 'user', content: prompt}]);
+
+        callback(ERROR.ok, data);
+
+    
     }
 
     static async predict(params, callback){

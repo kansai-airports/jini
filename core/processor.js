@@ -4,6 +4,8 @@ import {ERROR} from './const.js';
 export default async (request, callback) => {
 
     const {instruction, payload} = request.body;
+    console.log(request.body);
+
 
     //Verify parameters
     if(!(instruction && Instruction.isValid(instruction))){
